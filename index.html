@@ -88,13 +88,6 @@ button {
       <option>Close Game</option>
     </select>
 
-    <label>TONE</label>
-    <select id="tone">
-      <option>Hype</option>
-      <option>Real</option>
-      <option>Funny</option>
-    </select>
-
     <label>PRODUCT</label>
     <select id="product">
       <option>2025 National Champions Hat</option>
@@ -113,7 +106,7 @@ button {
 
 <script>
 
-// ===== LSU SCHEDULE (EDIT WEEKLY IF YOU WANT) =====
+// ===== SCHEDULE =====
 const schedule = {
   Baseball: ["Louisiana Tech", "Oklahoma", "Texas A&M", "Arkansas"],
   Football: ["Clemson", "Alabama", "Ole Miss", "Florida"],
@@ -124,7 +117,6 @@ const schedule = {
 const sportEl = document.getElementById("sport");
 const opponentEl = document.getElementById("opponent");
 
-// Populate sports
 function loadSports() {
   sportEl.innerHTML = "";
   Object.keys(schedule).forEach(sport => {
@@ -135,7 +127,6 @@ function loadSports() {
   });
 }
 
-// Populate opponents
 function loadOpponents() {
   const sport = sportEl.value;
   opponentEl.innerHTML = "";
@@ -148,95 +139,116 @@ function loadOpponents() {
   });
 }
 
-// ===== GENERATION LOGIC =====
+// ===== ENGAGEMENT GENERATOR =====
 function generatePost() {
   const sport = sportEl.value;
   const opponent = opponentEl.value;
   const type = document.getElementById("type").value;
-  const tone = document.getElementById("tone").value;
   const result = document.getElementById("result").value;
   const product = document.getElementById("product").value;
 
-  let post = "";
+  const formats = {
 
-  // GAMEDAY
-  if (type === "Gameday") {
-    const hooks = [
-      `${sport} gameday.`,
-      `It’s time.`,
-      `LSU vs ${opponent}.`,
-      `Another one.`
-    ];
-
-    post = `${random(hooks)}
+    Gameday: [
+`Be honest…
 
 LSU vs ${opponent}
 
-${tone === "Hype" ? "Let’s eat." : tone === "Funny" ? "Heart rate already up." : "Show up regardless."}
+We winning or what?
 
-Wear it right.
+👇`,
 
-Gameday Stripes.`;
-  }
+`LSU vs ${opponent}
 
-  // RESULT
-  if (type === "Result") {
-    if (result === "Win") {
-      post = `LSU gets it done.
+Win or loss?
 
-${opponent} handled.
+No fence sitting.
 
-That’s what we do.
+👇`,
 
-Gameday Stripes.`;
-    }
+`It’s ${sport} gameday.
 
-    if (result === "Loss") {
-      post = `Tough one.
+If you’re not locked in already, what are we doing?
 
-We’ll be back.
+👇`
+    ],
 
-That’s part of it.
+    Result: [
+`Be honest…
 
-Gameday Stripes.`;
-    }
+That game vs ${opponent}…
 
-    if (result === "Close Game") {
-      post = `Heart attack game.
+How are we feeling?
 
-LSU survives ${opponent}.
+👇`,
 
-Not pretty. Still counts.
+`${result === "Win" ? opponent + " just got handled." : "Tough one vs " + opponent + "."}
 
-Gameday Stripes.`;
-    }
-  }
+Say it louder.
 
-  // PRODUCT
-  if (type === "Product") {
-    post = `New drop.
+👇`,
+
+`${result === "Loss" ? "Yeah… we’re not talking about that one." : "That’s what we do."}
+
+Agree or disagree?
+
+👇`
+    ],
+
+    Product: [
+`Most LSU merch is honestly terrible.
+
+Too loud. Too messy.
+
+So I made this.
 
 ${product}
 
-Clean. Wearable. Not the usual LSU gear.
+Would you wear it?`,
 
-Game day or everyday.
+`This isn’t your typical LSU gear.
 
-Limited run.`;
-  }
+${product}
 
-  // FAN
-  if (type === "Fan") {
-    post = `Real LSU fans know.
+Clean.
 
-Win or lose, we’re showing up.
+Simple.
 
-${tone === "Funny" ? "Even after that last one…" : ""}
+Would you rock it?`,
 
-That’s what this brand is.`;
-  }
+`$20.25 right now.
 
-  return post;
+${product}
+
+Worth it or nah?
+
+👇`
+    ],
+
+    Fan: [
+`Real LSU fans don’t disappear.
+
+Win or lose.
+
+They stay.
+
+You one of them?
+
+👇`,
+
+`If you’re still watching every game…
+
+You’re built different.
+
+👇`,
+
+`Only real LSU fans will understand this feeling.
+
+👇`
+    ]
+  };
+
+  return random(formats[type]);
 }
 
 // ===== HELPERS =====
@@ -250,10 +262,10 @@ function renderPost(post) {
   div.className = "output";
 
   div.innerHTML = `
-    ${post}
-    <br><br>
-    <button onclick="copyText(this)">Copy</button>
-  `;
+${post}
+
+<button onclick="copyText(this)">Copy</button>
+`;
 
   document.getElementById("outputs").appendChild(div);
 }
