@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gameday Stripes</title>
+
+<style>
+body {
+  font-family: -apple-system, sans-serif;
+  background: #f5f3f0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+  color: #461d7c;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 12px;
+  color: #666;
+}
+
+select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+button {
+  background: #461d7c;
+  color: white;
+  font-weight: bold;
+}
+
+.output {
+  background: #000;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🐯 Gameday Stripes</h1>
+
+  <div class="card">
+
+    <label>SPORT</label>
+    <select id="sport"></select>
+
+    <label>OPPONENT</label>
+    <select id="opponent"></select>
+
+    <label>POST TYPE</label>
+    <select id="type">
+      <option>Gameday</option>
+      <option>Result</option>
+      <option>Product</option>
+      <option>Fan</option>
+    </select>
+
+    <label>RESULT (for result posts)</label>
+    <select id="result">
+      <option>Win</option>
+      <option>Loss</option>
+      <option>Close Game</option>
+    </select>
+
+    <label>TONE</label>
+    <select id="tone">
+      <option>Hype</option>
+      <option>Real</option>
+      <option>Funny</option>
+    </select>
+
+    <label>PRODUCT</label>
+    <select id="product">
+      <option>2025 National Champions Hat</option>
+      <option>LSU Baseball Tee</option>
+      <option>Gameday Stripes Hoodie</option>
+    </select>
+
+    <button onclick="generate()">Generate</button>
+    <button onclick="generateMultiple()">Generate 3 Options</button>
+
+  </div>
+
+  <div id="outputs"></div>
+
+</div>
+
+<script>
+
+// ===== LSU SCHEDULE (EDIT WEEKLY IF YOU WANT) =====
+const schedule = {
+  Baseball: ["Louisiana Tech", "Oklahoma", "Texas A&M", "Arkansas"],
+  Football: ["Clemson", "Alabama", "Ole Miss", "Florida"],
+  Basketball: ["Duke", "Kentucky", "Florida", "Tennessee"]
+};
+
+// ===== INIT =====
+const sportEl = document.getElementById("sport");
+const opponentEl = document.getElementById("opponent");
+
+// Populate sports
+function loadSports() {
+  sportEl.innerHTML = "";
+  Object.keys(schedule).forEach(sport => {
+    const opt = document.createElement("option");
+    opt.value = sport;
+    opt.textContent = sport;
+    sportEl.appendChild(opt);
+  });
+}
+
+// Populate opponents
+function loadOpponents() {
+  const sport = sportEl.value;
+  opponentEl.innerHTML = "";
+
+  schedule[sport].forEach(team => {
+    const opt = document.createElement("option");
+    opt.value = team;
+    opt.textContent = team;
+    opponentEl.appendChild(opt);
+  });
+}
+
+// ===== GENERATION LOGIC =====
+function generatePost() {
+  const sport = sportEl.value;
+  const opponent = opponentEl.value;
+  const type = document.getElementById("type").value;
+  const tone = document.getElementById("tone").value;
+  const result = document.getElementById("result").value;
+  const product = document.getElementById("product").value;
+
+  let post = "";
+
+  // GAMEDAY
+  if (type === "Gameday") {
+    const hooks = [
+      `${sport} gameday.`,
+      `It’s time.`,
+      `LSU vs ${opponent}.`,
+      `Another one.`
+    ];
+
+    post = `${random(hooks)}
+
+LSU vs ${opponent}
+
+${tone === "Hype" ? "Let’s eat." : tone === "Funny" ? "Heart rate already up." : "Show up regardless."}
+
+Wear it right.
+
+Gameday Stripes.`;
+  }
+
+  // RESULT
+  if (type === "Result") {
+    if (result === "Win") {
+      post = `LSU gets it done.
+
+${opponent} handled.
+
+That’s what we do.
+
+Gameday Stripes.`;
+    }
+
+    if (result === "Loss") {
+      post = `Tough one.
+
+We’ll be back.
+
+That’s part of it.
+
+Gameday Stripes.`;
+    }
+
+    if (result === "Close Game") {
+      post = `Heart attack game.
+
+LSU survives ${opponent}.
+
+Not pretty. Still counts.
+
+Gameday Stripes.`;
+    }
+  }
+
+  // PRODUCT
+  if (type === "Product") {
+    post = `New drop.
+
+${product}
+
+Clean. Wearable. Not the usual LSU gear.
+
+Game day or everyday.
+
+Limited run.`;
+  }
+
+  // FAN
+  if (type === "Fan") {
+    post = `Real LSU fans know.
+
+Win or lose, we’re showing up.
+
+${tone === "Funny" ? "Even after that last one…" : ""}
+
+That’s what this brand is.`;
+  }
+
+  return post;
+}
+
+// ===== HELPERS =====
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// ===== RENDER =====
+function renderPost(post) {
+  const div = document.createElement("div");
+  div.className = "output";
+
+  div.innerHTML = `
+    ${post}
+    <br><br>
+    <button onclick="copyText(this)">Copy</button>
+  `;
+
+  document.getElementById("outputs").appendChild(div);
+}
+
+function generate() {
+  document.getElementById("outputs").innerHTML = "";
+  renderPost(generatePost());
+}
+
+function generateMultiple() {
+  document.getElementById("outputs").innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    renderPost(generatePost());
+  }
+}
+
+function copyText(btn) {
+  const text = btn.parentElement.innerText.replace("Copy", "").trim();
+  navigator.clipboard.writeText(text);
+  btn.innerText = "Copied";
+}
+
+// ===== INIT RUN =====
+loadSports();
+loadOpponents();
+sportEl.addEventListener("change", loadOpponents);
+
+</script>
+
+</body>
+</html>
