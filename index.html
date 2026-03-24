@@ -1,299 +1,632 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Gameday Stripes</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gameday Stripes X Generator</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f5f3f0;
+      margin: 0;
+      padding: 20px;
+      color: #111;
+    }
 
-<style>
-body {
-  font-family: -apple-system, sans-serif;
-  background: #f5f3f0;
-  padding: 20px;
-}
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+    }
 
-.container {
-  max-width: 500px;
-  margin: auto;
-}
+    h1 {
+      text-align: center;
+      color: #461d7c;
+      margin-bottom: 16px;
+    }
 
-h1 {
-  text-align: center;
-  color: #461d7c;
-}
+    .card {
+      background: #fff;
+      padding: 16px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
 
-.card {
-  background: white;
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
+    label {
+      display: block;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 6px;
+    }
 
-label {
-  font-size: 12px;
-  color: #666;
-}
+    select, textarea, input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+    }
 
-select, button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
 
-button {
-  background: #461d7c;
-  color: white;
-  font-weight: bold;
-}
+    button {
+      background: #461d7c;
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
 
-.output {
-  background: #000;
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  white-space: pre-wrap;
-  margin-bottom: 10px;
-}
-</style>
+    button.secondary {
+      background: #222;
+    }
+
+    .output-wrap {
+      margin-bottom: 14px;
+    }
+
+    .output {
+      background: #000;
+      color: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .helper {
+      font-size: 12px;
+      color: #777;
+      margin-top: -6px;
+      margin-bottom: 12px;
+    }
+
+    .copy-btn {
+      margin-top: 8px;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h1>🐯 Gameday Stripes</h1>
 
-<div class="container">
-  <h1>🐯 Gameday Stripes</h1>
+    <div class="card">
+      <label for="type">POST TYPE</label>
+      <select id="type">
+        <option value="Gameday">Gameday</option>
+        <option value="Result">Result</option>
+        <option value="Product">Product</option>
+        <option value="Fan">Fan Identity</option>
+        <option value="Promo">Promo / Offer</option>
+        <option value="Custom">Custom Angle</option>
+      </select>
 
-  <div class="card">
+      <div id="sportGroup">
+        <label for="sport">SPORT</label>
+        <select id="sport"></select>
+      </div>
 
-    <label>SPORT</label>
-    <select id="sport"></select>
+      <div id="opponentGroup">
+        <label for="opponent">OPPONENT</label>
+        <select id="opponent"></select>
+      </div>
 
-    <label>OPPONENT</label>
-    <select id="opponent"></select>
+      <div id="resultGroup">
+        <label for="result">GAME RESULT</label>
+        <select id="result">
+          <option value="Win">Win</option>
+          <option value="Loss">Loss</option>
+          <option value="Close Game">Close Game</option>
+          <option value="Blowout Win">Blowout Win</option>
+          <option value="Blowout Loss">Blowout Loss</option>
+        </select>
+      </div>
 
-    <label>POST TYPE</label>
-    <select id="type">
-      <option>Gameday</option>
-      <option>Result</option>
-      <option>Product</option>
-      <option>Fan</option>
-    </select>
+      <div id="productGroup">
+        <label for="product">PRODUCT</label>
+        <select id="product">
+          <option>LSU Baseball 2025 National Champions Hat</option>
+          <option>Just Different T-Shirt</option>
+          <option>Just Different Hoodie</option>
+          <option>Just Different Snapback</option>
+          <option>LSU Baseball Tee</option>
+        </select>
+      </div>
 
-    <label>RESULT (for result posts)</label>
-    <select id="result">
-      <option>Win</option>
-      <option>Loss</option>
-      <option>Close Game</option>
-    </select>
+      <div id="discountGroup">
+        <label for="discount">DISCOUNT / OFFER</label>
+        <input id="discount" type="text" placeholder="Example: 10% OFF with code WIN10" />
+      </div>
 
-    <label>PRODUCT</label>
-    <select id="product">
-      <option>2025 National Champions Hat</option>
-      <option>LSU Baseball Tee</option>
-      <option>Gameday Stripes Hoodie</option>
-    </select>
+      <div id="emotionGroup">
+        <label for="emotion">POINT / REAL FEELING OF THE POST</label>
+        <textarea id="emotion" placeholder="Example: I want this to feel like real fans still showed up after a tough loss and this brand is for those people."></textarea>
+        <div class="helper">Type what you actually want the post to say, feel like, or call out.</div>
+      </div>
 
-    <button onclick="generate()">Generate</button>
-    <button onclick="generateMultiple()">Generate 3 Options</button>
+      <label for="tone">TONE</label>
+      <select id="tone">
+        <option value="Real">Real</option>
+        <option value="Hype">Hype</option>
+        <option value="Funny">Funny</option>
+        <option value="Confident">Confident</option>
+        <option value="Irritated">Irritated</option>
+      </select>
 
+      <button onclick="generate()">Generate</button>
+      <button class="secondary" onclick="generateMultiple()">Generate 3 Options</button>
+    </div>
+
+    <div id="outputs"></div>
   </div>
 
-  <div id="outputs"></div>
+  <script>
+    const schedule = {
+      Baseball: [
+        "Louisiana Tech",
+        "Oklahoma",
+        "Texas A&M",
+        "Arkansas",
+        "Auburn",
+        "Vanderbilt"
+      ],
+      Football: [
+        "Clemson",
+        "Alabama",
+        "Ole Miss",
+        "Florida",
+        "Texas A&M"
+      ],
+      Basketball: [
+        "Duke",
+        "Kentucky",
+        "Florida",
+        "Tennessee",
+        "Alabama"
+      ],
+      Softball: [
+        "Oklahoma",
+        "Texas",
+        "Alabama",
+        "Florida",
+        "Louisiana Tech"
+      ]
+    };
 
-</div>
+    const sportEl = document.getElementById("sport");
+    const opponentEl = document.getElementById("opponent");
+    const typeEl = document.getElementById("type");
+    const toneEl = document.getElementById("tone");
+    const resultEl = document.getElementById("result");
+    const productEl = document.getElementById("product");
+    const discountEl = document.getElementById("discount");
+    const emotionEl = document.getElementById("emotion");
 
-<script>
+    const sportGroup = document.getElementById("sportGroup");
+    const opponentGroup = document.getElementById("opponentGroup");
+    const resultGroup = document.getElementById("resultGroup");
+    const productGroup = document.getElementById("productGroup");
+    const discountGroup = document.getElementById("discountGroup");
+    const emotionGroup = document.getElementById("emotionGroup");
 
-// ===== SCHEDULE =====
-const schedule = {
-  Baseball: ["Louisiana Tech", "Oklahoma", "Texas A&M", "Arkansas"],
-  Football: ["Clemson", "Alabama", "Ole Miss", "Florida"],
-  Basketball: ["Duke", "Kentucky", "Florida", "Tennessee"]
-};
+    function random(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
-// ===== INIT =====
-const sportEl = document.getElementById("sport");
-const opponentEl = document.getElementById("opponent");
+    function cleanText(text) {
+      return (text || "").trim();
+    }
 
-function loadSports() {
-  sportEl.innerHTML = "";
-  Object.keys(schedule).forEach(sport => {
-    const opt = document.createElement("option");
-    opt.value = sport;
-    opt.textContent = sport;
-    sportEl.appendChild(opt);
-  });
-}
+    function show(el) {
+      el.classList.remove("hidden");
+    }
 
-function loadOpponents() {
-  const sport = sportEl.value;
-  opponentEl.innerHTML = "";
+    function hide(el) {
+      el.classList.add("hidden");
+    }
 
-  schedule[sport].forEach(team => {
-    const opt = document.createElement("option");
-    opt.value = team;
-    opt.textContent = team;
-    opponentEl.appendChild(opt);
-  });
-}
+    function loadSports() {
+      sportEl.innerHTML = "";
+      Object.keys(schedule).forEach((sport) => {
+        const opt = document.createElement("option");
+        opt.value = sport;
+        opt.textContent = sport;
+        sportEl.appendChild(opt);
+      });
+    }
 
-// ===== ENGAGEMENT GENERATOR =====
-function generatePost() {
-  const sport = sportEl.value;
-  const opponent = opponentEl.value;
-  const type = document.getElementById("type").value;
-  const result = document.getElementById("result").value;
-  const product = document.getElementById("product").value;
+    function loadOpponents() {
+      const sport = sportEl.value;
+      opponentEl.innerHTML = "";
+      schedule[sport].forEach((team) => {
+        const opt = document.createElement("option");
+        opt.value = team;
+        opt.textContent = team;
+        opponentEl.appendChild(opt);
+      });
+    }
 
-  const formats = {
+    function updateConditionalFields() {
+      const type = typeEl.value;
 
-    Gameday: [
-`Be honest…
+      show(sportGroup);
+      show(opponentGroup);
+      show(emotionGroup);
 
-LSU vs ${opponent}
+      hide(resultGroup);
+      hide(productGroup);
+      hide(discountGroup);
 
-We winning or what?
+      if (type === "Gameday") {
+        show(sportGroup);
+        show(opponentGroup);
+      }
 
-👇`,
+      if (type === "Result") {
+        show(sportGroup);
+        show(opponentGroup);
+        show(resultGroup);
+      }
 
-`LSU vs ${opponent}
+      if (type === "Product") {
+        hide(sportGroup);
+        hide(opponentGroup);
+        show(productGroup);
+      }
 
-Win or loss?
+      if (type === "Fan") {
+        show(sportGroup);
+        hide(opponentGroup);
+      }
 
-No fence sitting.
+      if (type === "Promo") {
+        hide(sportGroup);
+        hide(opponentGroup);
+        show(productGroup);
+        show(discountGroup);
+      }
 
-👇`,
+      if (type === "Custom") {
+        show(sportGroup);
+        show(opponentGroup);
+      }
+    }
 
+    function toneTag(tone) {
+      const map = {
+        Real: "",
+        Hype: "",
+        Funny: "😂",
+        Confident: "",
+        Irritated: ""
+      };
+      return map[tone] || "";
+    }
+
+    function getFeeling(emotion, fallback) {
+      const cleaned = cleanText(emotion);
+      return cleaned ? cleaned : fallback;
+    }
+
+    function getCTA(type, tone) {
+      const ctas = {
+        Gameday: [
+          "How we feeling?",
+          "Win or loss?",
+          "Talk to me.",
+          "What are you expecting?"
+        ],
+        Result: [
+          "Be honest.",
+          "How are we feeling?",
+          "What’s your takeaway?",
+          "Agree or disagree?"
+        ],
+        Product: [
+          "Would you wear it?",
+          "Need it or nah?",
+          "Would you rock this?",
+          "Be honest."
+        ],
+        Fan: [
+          "You one of them?",
+          "Still here or not?",
+          "Tell me I’m wrong.",
+          "Real fan behavior?"
+        ],
+        Promo: [
+          "Who needs one?",
+          "Who’s in?",
+          "You taking this or what?",
+          "Don’t wait too long."
+        ],
+        Custom: [
+          "How are you seeing it?",
+          "Tell me I’m wrong.",
+          "Agree or disagree?",
+          "What’s your take?"
+        ]
+      };
+
+      const base = random(ctas[type] || ["What do you think?"]);
+      const tag = toneTag(tone);
+      return tag ? `${base}\n\n${tag}` : base;
+    }
+
+    function gamedayPosts({ sport, opponent, tone, emotion }) {
+      return [
 `It’s ${sport} gameday.
 
-If you’re not locked in already, what are we doing?
+LSU vs ${opponent}.
 
-👇`
-    ],
+${getFeeling(emotion, "Need the Tigers to look like the better team from the jump.")}
 
-    Result: [
-`Be honest…
+${getCTA("Gameday", tone)}`,
 
-That game vs ${opponent}…
+`LSU vs ${opponent}.
 
-How are we feeling?
+No cute stuff.
 
-👇`,
+${getFeeling(emotion, "Just go handle business.")}
 
-`${result === "Win" ? opponent + " just got handled." : "Tough one vs " + opponent + "."}
+${getCTA("Gameday", tone)}`,
 
-Say it louder.
+`${sport} tonight.
 
-👇`,
+${getFeeling(emotion, "Feels like one LSU needs to take personally.")}
 
-`${result === "Loss" ? "Yeah… we’re not talking about that one." : "That’s what we do."}
+${getCTA("Gameday", tone)}`
+      ];
+    }
 
-Agree or disagree?
+    function resultPosts({ sport, opponent, result, tone, emotion }) {
+      const resultLead = {
+        "Win": "TIGERS WIN.",
+        "Loss": "Tough one.",
+        "Close Game": "That one took years off my life.",
+        "Blowout Win": "Statement made.",
+        "Blowout Loss": "Yeah… not ideal."
+      };
 
-👇`
-    ],
+      const resultMiddle = {
+        "Win": `LSU got it done against ${opponent}.`,
+        "Loss": `LSU drops one to ${opponent}.`,
+        "Close Game": `LSU and ${opponent} made that way too stressful.`,
+        "Blowout Win": `${opponent} got handled.`,
+        "Blowout Loss": `${opponent} got the better of LSU.`
+      };
 
-    Product: [
-`Most LSU merch is honestly terrible.
+      return [
+`${resultLead[result]}
 
-Too loud. Too messy.
+${resultMiddle[result]}
 
-So I made this.
+${getFeeling(emotion, "What’s your honest takeaway from that one?")}
+
+${getCTA("Result", tone)}`,
+
+`${result === "Win" ? "We’ll take it." : result === "Loss" ? "No sugarcoating that one." : result === "Close Game" ? "Survived it." : result === "Blowout Win" ? "Exactly what should have happened." : "Flush it and move on."}
+
+${sport} vs ${opponent}.
+
+${getFeeling(emotion, "This one says a lot.")}
+
+${getCTA("Result", tone)}`,
+
+`${resultMiddle[result]}
+
+${getFeeling(emotion, "Fans are going to have some thoughts on that one.")}
+
+${getCTA("Result", tone)}`
+      ];
+    }
+
+    function productPosts({ product, tone, emotion }) {
+      return [
+`Most LSU gear is too much.
+
+Too loud. Too forced.
 
 ${product}
 
-Would you wear it?`,
+${getFeeling(emotion, "This is for people who want clean LSU gear they can actually wear.")}
 
-`This isn’t your typical LSU gear.
+${getCTA("Product", tone)}`,
 
-${product}
+`${product}
 
-Clean.
+${getFeeling(emotion, "The point was simple — make something that actually feels different.")}
 
-Simple.
+${getCTA("Product", tone)}`,
 
-Would you rock it?`,
-
-`$20.25 right now.
+`This isn’t random fan gear.
 
 ${product}
 
-Worth it or nah?
+${getFeeling(emotion, "It’s supposed to feel like something real fans would actually want.")}
 
-👇`
-    ],
+${getCTA("Product", tone)}`
+      ];
+    }
 
-    Fan: [
+    function fanPosts({ sport, tone, emotion }) {
+      return [
 `Real LSU fans don’t disappear.
 
-Win or lose.
+${getFeeling(emotion, "They’re still here after wins, losses, and all of it.")}
 
-They stay.
+${getCTA("Fan", tone)}`,
 
-You one of them?
+`This brand is for the people who stay locked in.
 
-👇`,
+${getFeeling(emotion, `Not just when ${sport} is rolling. Always.`)}
 
-`If you’re still watching every game…
+${getCTA("Fan", tone)}`,
 
-You’re built different.
+`Some people only talk when LSU wins.
 
-👇`,
+${getFeeling(emotion, "The real ones are here either way.")}
 
-`Only real LSU fans will understand this feeling.
+${getCTA("Fan", tone)}`
+      ];
+    }
 
-👇`
-    ]
-  };
+    function promoPosts({ product, discount, tone, emotion }) {
+      const offer = cleanText(discount) || "10% OFF right now";
 
-  return random(formats[type]);
-}
+      return [
+`Let’s run this back.
 
-// ===== HELPERS =====
-function random(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+${offer}
 
-// ===== RENDER =====
-function renderPost(post) {
-  const div = document.createElement("div");
-  div.className = "output";
+${product}
 
-  div.innerHTML = `
-${post}
+${getFeeling(emotion, "If you’ve been waiting, now’s probably the time.")}
 
-<button onclick="copyText(this)">Copy</button>
-`;
+${getCTA("Promo", tone)}`,
 
-  document.getElementById("outputs").appendChild(div);
-}
+`${product}
 
-function generate() {
-  document.getElementById("outputs").innerHTML = "";
-  renderPost(generatePost());
-}
+${offer}
 
-function generateMultiple() {
-  document.getElementById("outputs").innerHTML = "";
-  for (let i = 0; i < 3; i++) {
-    renderPost(generatePost());
-  }
-}
+${getFeeling(emotion, "No reason to overthink this one.")}
 
-function copyText(btn) {
-  const text = btn.parentElement.innerText.replace("Copy", "").trim();
-  navigator.clipboard.writeText(text);
-  btn.innerText = "Copied";
-}
+${getCTA("Promo", tone)}`,
 
-// ===== INIT RUN =====
-loadSports();
-loadOpponents();
-sportEl.addEventListener("change", loadOpponents);
+`If you’ve been eyeing this one, here you go.
 
-</script>
+${product}
 
+${offer}
+
+${getFeeling(emotion, "Grab it while it’s there.")}
+
+${getCTA("Promo", tone)}`
+      ];
+    }
+
+    function customPosts({ sport, opponent, tone, emotion }) {
+      const matchup = opponent ? `${sport} vs ${opponent}` : sport;
+
+      return [
+`Be honest…
+
+${matchup}
+
+${getFeeling(emotion, "Say the actual thing fans are already thinking.")}
+
+${getCTA("Custom", tone)}`,
+
+`${matchup}
+
+${getFeeling(emotion, "This should feel direct, opinionated, and real.")}
+
+${getCTA("Custom", tone)}`,
+
+`${getFeeling(emotion, "Write the post you actually want to say, not the safe version.")}
+
+${getCTA("Custom", tone)}`
+      ];
+    }
+
+    function generatePost() {
+      const type = typeEl.value;
+      const sport = sportEl.value;
+      const opponent = opponentEl.value;
+      const result = resultEl.value;
+      const tone = toneEl.value;
+      const product = productEl.value;
+      const discount = discountEl.value;
+      const emotion = emotionEl.value;
+
+      let options = [];
+
+      if (type === "Gameday") {
+        options = gamedayPosts({ sport, opponent, tone, emotion });
+      }
+
+      if (type === "Result") {
+        options = resultPosts({ sport, opponent, result, tone, emotion });
+      }
+
+      if (type === "Product") {
+        options = productPosts({ product, tone, emotion });
+      }
+
+      if (type === "Fan") {
+        options = fanPosts({ sport, tone, emotion });
+      }
+
+      if (type === "Promo") {
+        options = promoPosts({ product, discount, tone, emotion });
+      }
+
+      if (type === "Custom") {
+        options = customPosts({ sport, opponent, tone, emotion });
+      }
+
+      return random(options);
+    }
+
+    function renderPost(post) {
+      const outputs = document.getElementById("outputs");
+
+      const wrap = document.createElement("div");
+      wrap.className = "output-wrap";
+
+      const box = document.createElement("div");
+      box.className = "output";
+      box.textContent = post;
+
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.onclick = function () {
+        navigator.clipboard.writeText(post).then(() => {
+          btn.textContent = "Copied";
+          setTimeout(() => {
+            btn.textContent = "Copy";
+          }, 1200);
+        });
+      };
+
+      wrap.appendChild(box);
+      wrap.appendChild(btn);
+      outputs.appendChild(wrap);
+    }
+
+    function generate() {
+      const outputs = document.getElementById("outputs");
+      outputs.innerHTML = "";
+      renderPost(generatePost());
+    }
+
+    function generateMultiple() {
+      const outputs = document.getElementById("outputs");
+      outputs.innerHTML = "";
+      for (let i = 0; i < 3; i++) {
+        renderPost(generatePost());
+      }
+    }
+
+    loadSports();
+    loadOpponents();
+    updateConditionalFields();
+
+    sportEl.addEventListener("change", loadOpponents);
+    typeEl.addEventListener("change", updateConditionalFields);
+  </script>
 </body>
 </html>
