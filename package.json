@@ -1,0 +1,7 @@
+{
+  "name": "gameday-stripes-content-engine",
+  "private": true,
+  "dependencies": {
+    "openai": "^5.0.0"
+  }
+}
