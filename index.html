@@ -1,861 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gameday Stripes Content Engine</title>
-  <style>
-    :root {
-      --purple: #461d7c;
-      --gold: #fdd023;
-      --black: #0b0b0d;
-      --panel: #16161b;
-      --panel-2: #1d1d24;
-      --text: #f5f5f7;
-      --muted: #9a9aa3;
-      --border: #2a2a33;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gameday Stripes Content Engine</title>
 
-    * { box-sizing: border-box; }
+<style>
+:root {
+  --purple:#461d7c;
+  --gold:#fdd023;
+  --bg:#0b0b0d;
+  --panel:#16161b;
+  --panel2:#1d1d24;
+  --text:#f5f5f7;
+  --muted:#9a9aa3;
+  --border:#2a2a33;
+}
 
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(70,29,124,0.35), transparent 30%),
-        linear-gradient(180deg, #0a0a0c 0%, #111114 100%);
-      color: var(--text);
-    }
+*{box-sizing:border-box;}
 
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+body{
+  margin:0;
+  padding:20px;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#0a0a0c,#111114);
+  color:var(--text);
+}
 
-    .hero {
-      background: linear-gradient(135deg, rgba(70,29,124,0.95), rgba(14,14,18,0.95));
-      border: 1px solid rgba(253,208,35,0.18);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.28);
-    }
+.container{max-width:1000px;margin:auto;}
 
-    .hero-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:16px;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+.section-title{
+  color:var(--gold);
+  font-weight:800;
+  font-size:13px;
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
 
-    .brand-mark {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      background: var(--gold);
-      color: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 20px;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 24px;
-      letter-spacing: 0.2px;
-    }
+.full{grid-column:1/-1;}
 
-    .sub {
-      margin-top: 4px;
-      color: rgba(255,255,255,0.78);
-      font-size: 13px;
-    }
+label{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:6px;
+  display:block;
+}
 
-    .hero-tag {
-      background: rgba(253,208,35,0.12);
-      border: 1px solid rgba(253,208,35,0.35);
-      color: var(--gold);
-      padding: 10px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-    }
+select,textarea,button{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--panel2);
+  color:var(--text);
+}
 
-    .layout {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
-      align-items: start;
-    }
+textarea{min-height:120px;}
 
-    .card {
-      background: rgba(22,22,27,0.94);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    }
+button{
+  cursor:pointer;
+  font-weight:800;
+}
 
-    .section-title {
-      margin: 0 0 14px 0;
-      font-size: 14px;
-      color: var(--gold);
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-    }
+.btn-primary{background:var(--purple);}
+.btn-gold{background:var(--gold);color:#111;}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+.output-card{
+  background:#101014;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
 
-    .full { grid-column: 1 / -1; }
+.badge{
+  font-size:11px;
+  font-weight:800;
+  color:var(--gold);
+  margin-bottom:6px;
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
+.copy-btn{
+  margin-top:8px;
+  background:var(--purple);
+}
 
-    select,
-    textarea,
-    input,
-    button {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      padding: 12px 14px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-    }
+.helper{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
 
-    select:focus,
-    textarea:focus,
-    input:focus {
-      border-color: rgba(253,208,35,0.5);
-      box-shadow: 0 0 0 3px rgba(253,208,35,0.08);
-    }
+.status{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:10px;
+}
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-      line-height: 1.4;
-    }
+.interpret{
+  background:#1a1a20;
+  border:1px solid var(--border);
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+}
 
-    .helper {
-      margin-top: -4px;
-      margin-bottom: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 8px;
-    }
-
-    .button-row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    button {
-      cursor: pointer;
-      font-weight: 800;
-      transition: transform 0.08s ease, opacity 0.15s ease;
-    }
-
-    button:hover { opacity: 0.96; }
-    button:active { transform: translateY(1px); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--purple), #5a24a0);
-      border-color: rgba(255,255,255,0.08);
-    }
-
-    .btn-gold {
-      background: linear-gradient(135deg, #d6ab13, var(--gold));
-      color: #111;
-      border-color: rgba(0,0,0,0.08);
-    }
-
-    .btn-dark { background: #0e0e12; }
-
-    .btn-small {
-      width: auto;
-      min-width: 0;
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .hidden { display: none !important; }
-
-    .status-line {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    .interpreted-box {
-      background: linear-gradient(180deg, rgba(253,208,35,0.06), rgba(70,29,124,0.06));
-      border: 1px solid rgba(253,208,35,0.12);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
-    }
-
-    .interpreted-label {
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 6px;
-    }
-
-    .interpreted-text {
-      color: var(--text);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-
-    .output-card {
-      background: linear-gradient(180deg, #101014 0%, #0c0c10 100%);
-      border: 1px solid rgba(253,208,35,0.14);
-      border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-
-    .output-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .output-badge {
-      background: rgba(70,29,124,0.28);
-      border: 1px solid rgba(253,208,35,0.18);
-      color: #fff;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .char-count {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .char-ok { color: #b9ffd0; }
-    .char-warn { color: #ffd08a; }
-    .char-bad { color: #ff8a8a; }
-
-    .output-text {
-      white-space: pre-wrap;
-      line-height: 1.45;
-      font-size: 15px;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .output-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .output-actions button {
-      width: auto;
-      min-width: 96px;
-      padding: 10px 12px;
-      font-size: 13px;
-    }
-
-    .topic-box {
-      background: linear-gradient(180deg, rgba(253,208,35,0.08), rgba(70,29,124,0.08));
-      border: 1px solid rgba(253,208,35,0.15);
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    .topic-title {
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 6px;
-      color: #fff;
-      line-height: 1.35;
-    }
-
-    .topic-meta {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-
-    .topic-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .topic-subtitle {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin: 0 0 10px 0;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    .pill {
-      background: rgba(253,208,35,0.08);
-      border: 1px solid rgba(253,208,35,0.18);
-      color: var(--gold);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 640px) {
-      .grid,
-      .button-row,
-      .button-row-3 {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="hero">
-      <div class="hero-top">
-        <div class="brand">
-          <div class="brand-mark">GS</div>
-          <div>
-            <h1>Gameday Stripes Content Engine</h1>
-            <div class="sub">AI version — built to turn your seed into actual fan-native posts.</div>
-          </div>
-        </div>
-        <div class="hero-tag">OpenAI-powered</div>
-      </div>
-    </div>
-
-    <div class="layout">
-      <div>
-        <div class="card">
-          <div class="section-title">Post Setup</div>
-
-          <div class="grid">
-            <div>
-              <label for="type">POST TYPE</label>
-              <select id="type">
-                <option value="Gameday">Gameday</option>
-                <option value="Result">Result</option>
-                <option value="Product">Product</option>
-                <option value="Fan">Fan Identity</option>
-                <option value="Hook">Hook Seed → Full Post</option>
-                <option value="Thread">Thread</option>
-                <option value="Reply">Reply</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="mode">MODE</label>
-              <select id="mode">
-                <option value="Normal">Normal</option>
-                <option value="Controversial">Controversial</option>
-                <option value="Funny">Funny</option>
-                <option value="Aggressive">Aggressive</option>
-              </select>
-            </div>
-
-            <div id="sportGroup">
-              <label for="sport">SPORT</label>
-              <select id="sport"></select>
-            </div>
-
-            <div id="opponentGroup">
-              <label for="opponent">OPPONENT</label>
-              <select id="opponent"></select>
-            </div>
-
-            <div id="resultGroup" class="hidden">
-              <label for="result">GAME RESULT</label>
-              <select id="result">
-                <option value="Win">Win</option>
-                <option value="Loss">Loss</option>
-                <option value="Close Game">Close Game</option>
-                <option value="Blowout Win">Blowout Win</option>
-                <option value="Blowout Loss">Blowout Loss</option>
-              </select>
-            </div>
-
-            <div id="productGroup" class="hidden">
-              <label for="product">PRODUCT</label>
-              <select id="product">
-                <option>National Champions Hat</option>
-                <option>LSU Baseball Tee</option>
-                <option>Gameday Hoodie</option>
-                <option>Just Different Tee</option>
-                <option>LSU Script Tee</option>
-              </select>
-            </div>
-
-            <div class="full">
-              <label for="emotion">SEED / VIBE / STAT / REAL POINT</label>
-              <textarea id="emotion" placeholder="Examples:
-Derek Curiel is 7 for 7
-real fans stayed loud after a bad loss
-LSU merch is too loud and overdone
-this should feel like LSU needs to handle business"></textarea>
-              <div class="helper">
-                You can paste a stat, observation, or rough point here. Example: “Derek Curiel is 7 for 7.” The AI should turn that into a real post idea, not repeat it back.
-              </div>
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="btn-primary" onclick="generateContent()">Generate AI Post Pack</button>
-            <button class="btn-gold" onclick="useRandomTopic()">I'm Blank</button>
-          </div>
-
-          <div class="status-line" id="statusLine">Ready.</div>
-        </div>
-
-        <div class="toolbar">
-          <div class="pill">Primary post</div>
-          <div class="pill">3 real variations</div>
-          <div class="pill">Hooks</div>
-          <div class="pill">Replies</div>
-          <div class="pill">Thread</div>
-        </div>
-
-        <div id="outputs"></div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">Suggested Topics</div>
-
-          <div class="topic-subtitle">Pregame</div>
-          <div id="topicsPregame"></div>
-
-          <div class="topic-subtitle">Postgame</div>
-          <div id="topicsPostgame"></div>
-
-          <div class="topic-subtitle">Merch Tie-In</div>
-          <div id="topicsMerch"></div>
-
-          <div class="topic-subtitle">Controversial Take</div>
-          <div id="topicsControversial"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const schedule = {
-      Baseball: ["Louisiana Tech", "Oklahoma", "Texas A&M", "Arkansas", "Auburn", "Vanderbilt"],
-      Football: ["Clemson", "Alabama", "Ole Miss", "Florida", "Texas A&M"],
-      Basketball: ["Duke", "Kentucky", "Florida", "Tennessee", "Alabama"],
-      Softball: ["Oklahoma", "Texas", "Alabama", "Florida", "Louisiana Tech"]
-    };
-
-    const fallbackTopics = [
-      {
-        category: "pregame",
-        topic: "LSU baseball needs to look like the better team early",
-        vibe: "this should feel like LSU needs to handle business from the jump",
-        type: "Gameday",
-        sport: "Baseball",
-        opponent: "Oklahoma",
-        reason: "Pregame angle"
-      },
-      {
-        category: "postgame",
-        topic: "Real fans still showed up after a frustrating loss",
-        vibe: "real fans stayed loud after a bad loss",
-        type: "Fan",
-        sport: "Baseball",
-        opponent: "Texas A&M",
-        reason: "Postgame fan angle"
-      },
-      {
-        category: "merch",
-        topic: "Call out bad LSU merch without sounding too salesy",
-        vibe: "a lot of LSU gear is too loud and forced",
-        type: "Product",
-        sport: "Baseball",
-        opponent: "Arkansas",
-        reason: "Merch tie-in"
-      },
-      {
-        category: "controversial",
-        topic: "Some LSU fans only get loud when things are easy",
-        vibe: "this should call out selective fandom without overexplaining it",
-        type: "Fan",
-        sport: "Football",
-        opponent: "Ole Miss",
-        reason: "Controversial take"
-      }
-    ];
-
-    const sportEl = document.getElementById("sport");
-    const opponentEl = document.getElementById("opponent");
-    const typeEl = document.getElementById("type");
-    const modeEl = document.getElementById("mode");
-    const resultEl = document.getElementById("result");
-    const productEl = document.getElementById("product");
-    const emotionEl = document.getElementById("emotion");
-    const outputsEl = document.getElementById("outputs");
-    const statusLineEl = document.getElementById("statusLine");
-
-    const sportGroup = document.getElementById("sportGroup");
-    const opponentGroup = document.getElementById("opponentGroup");
-    const resultGroup = document.getElementById("resultGroup");
-    const productGroup = document.getElementById("productGroup");
-
-    const topicContainers = {
-      pregame: document.getElementById("topicsPregame"),
-      postgame: document.getElementById("topicsPostgame"),
-      merch: document.getElementById("topicsMerch"),
-      controversial: document.getElementById("topicsControversial")
-    };
-
-    function random(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function loadSports() {
-      sportEl.innerHTML = "";
-      Object.keys(schedule).forEach((sport) => {
-        const opt = document.createElement("option");
-        opt.value = sport;
-        opt.textContent = sport;
-        sportEl.appendChild(opt);
-      });
-    }
-
-    function loadOpponents() {
-      const sport = sportEl.value;
-      opponentEl.innerHTML = "";
-      (schedule[sport] || []).forEach((team) => {
-        const opt = document.createElement("option");
-        opt.value = team;
-        opt.textContent = team;
-        opponentEl.appendChild(opt);
-      });
-    }
-
-    function updateConditionalFields() {
-      const type = typeEl.value;
-
-      sportGroup.classList.remove("hidden");
-      opponentGroup.classList.remove("hidden");
-      resultGroup.classList.add("hidden");
-      productGroup.classList.add("hidden");
-
-      if (type === "Result") {
-        resultGroup.classList.remove("hidden");
-      }
-
-      if (type === "Product") {
-        sportGroup.classList.add("hidden");
-        opponentGroup.classList.add("hidden");
-        productGroup.classList.remove("hidden");
-      }
-
-      if (type === "Fan") {
-        opponentGroup.classList.add("hidden");
-      }
-
-      if (type === "Hook" || type === "Thread" || type === "Reply") {
-        resultGroup.classList.add("hidden");
-      }
-
-      if (type === "Reply") {
-        opponentGroup.classList.add("hidden");
-        productGroup.classList.add("hidden");
-      }
-    }
-
-    function getPayload() {
-      return {
-        type: typeEl.value,
-        mode: modeEl.value,
-        sport: sportEl.value,
-        opponent: opponentEl.value,
-        result: resultEl.value,
-        product: productEl.value,
-        vibe: emotionEl.value
-      };
-    }
-
-    function getCharClass(len) {
-      if (len <= 240) return "char-ok";
-      if (len <= 280) return "char-warn";
-      return "char-bad";
-    }
-
-    function clearOutputs() {
-      outputsEl.innerHTML = "";
-    }
-
-    function renderInterpretedAngle(text) {
-      if (!text) return;
-
-      const box = document.createElement("div");
-      box.className = "interpreted-box";
-
-      const label = document.createElement("div");
-      label.className = "interpreted-label";
-      label.textContent = "AI Interpreted Angle";
-
-      const body = document.createElement("div");
-      body.className = "interpreted-text";
-      body.textContent = text;
-
-      box.appendChild(label);
-      box.appendChild(body);
-      outputsEl.appendChild(box);
-    }
-
-    function renderOutput(text, label = "Option") {
-      const len = text.length;
-
-      const card = document.createElement("div");
-      card.className = "output-card";
-
-      const top = document.createElement("div");
-      top.className = "output-top";
-
-      const badge = document.createElement("div");
-      badge.className = "output-badge";
-      badge.textContent = label;
-
-      const count = document.createElement("div");
-      count.className = `char-count ${getCharClass(len)}`;
-      count.textContent = `${len} chars`;
-
-      top.appendChild(badge);
-      top.appendChild(count);
-
-      const body = document.createElement("div");
-      body.className = "output-text";
-      body.textContent = text;
-
-      const actions = document.createElement("div");
-      actions.className = "output-actions";
-
-      const copyBtn = document.createElement("button");
-      copyBtn.className = "btn-primary";
-      copyBtn.textContent = "Copy";
-      copyBtn.onclick = async () => {
-        await navigator.clipboard.writeText(text);
-        copyBtn.textContent = "Copied";
-        setTimeout(() => copyBtn.textContent = "Copy", 1200);
-      };
-
-      actions.appendChild(copyBtn);
-
-      card.appendChild(top);
-      card.appendChild(body);
-      card.appendChild(actions);
-
-      outputsEl.appendChild(card);
-    }
-
-    function renderPack(data) {
-      clearOutputs();
-
-      if (data.interpreted_angle) {
-        renderInterpretedAngle(data.interpreted_angle);
-      }
-
-      if (data.primary) {
-        renderOutput(data.primary, "Primary");
-      }
-
-      if (Array.isArray(data.variations)) {
-        data.variations.forEach((v, i) => renderOutput(v, `Variation ${i + 1}`));
-      }
-
-      if (Array.isArray(data.hooks)) {
-        data.hooks.forEach((h, i) => renderOutput(h, `Hook ${i + 1}`));
-      }
-
-      if (Array.isArray(data.replies)) {
-        data.replies.forEach((r, i) => renderOutput(r, `Reply ${i + 1}`));
-      }
-
-      if (Array.isArray(data.thread) && data.thread.length) {
-        renderOutput(data.thread.join("\n\n"), "Thread");
-      }
-    }
-
-    async function generateContent() {
-      statusLineEl.textContent = "Generating...";
-      clearOutputs();
-
-      try {
-        const res = await fetch("/api/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(getPayload())
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Generation failed.");
-        }
-
-        renderPack(data);
-        statusLineEl.textContent = "Done.";
-      } catch (err) {
-        statusLineEl.textContent = `Error: ${err.message}`;
-      }
-    }
-
-    function applyTopic(topicObj) {
-      if (!topicObj) return;
-
-      if (topicObj.type) typeEl.value = topicObj.type;
-      if (topicObj.category === "controversial") modeEl.value = "Controversial";
-
-      if (topicObj.sport && schedule[topicObj.sport]) {
-        sportEl.value = topicObj.sport;
-        loadOpponents();
-      }
-
-      if (topicObj.opponent) {
-        const found = [...opponentEl.options].some(opt => opt.value === topicObj.opponent);
-        if (found) opponentEl.value = topicObj.opponent;
-      }
-
-      if (topicObj.vibe) {
-        emotionEl.value = topicObj.vibe;
-      }
-
-      updateConditionalFields();
-    }
-
-    function renderTopicCard(t) {
-      const box = document.createElement("div");
-      box.className = "topic-box";
-
-      const title = document.createElement("div");
-      title.className = "topic-title";
-      title.textContent = t.topic || "Suggested topic";
-
-      const meta = document.createElement("div");
-      meta.className = "topic-meta";
-      meta.textContent = `${t.reason || "Suggested angle"}${t.sport ? " • " + t.sport : ""}${t.opponent ? " • vs " + t.opponent : ""}`;
-
-      const actions = document.createElement("div");
-      actions.className = "topic-actions";
-
-      const useBtn = document.createElement("button");
-      useBtn.className = "btn-primary btn-small";
-      useBtn.textContent = "Use Topic";
-      useBtn.onclick = () => applyTopic(t);
-
-      const genBtn = document.createElement("button");
-      genBtn.className = "btn-dark btn-small";
-      genBtn.textContent = "Use + Generate";
-      genBtn.onclick = async () => {
-        applyTopic(t);
-        await generateContent();
-      };
-
-      actions.appendChild(useBtn);
-      actions.appendChild(genBtn);
-
-      box.appendChild(title);
-      box.appendChild(meta);
-      box.appendChild(actions);
-
-      return box;
-    }
-
-    function renderTopics(topics) {
-      Object.values(topicContainers).forEach(el => el.innerHTML = "");
-
-      const grouped = {
-        pregame: [],
-        postgame: [],
-        merch: [],
-        controversial: []
-      };
-
-      topics.forEach(t => {
-        const key = grouped[t.category] ? t.category : "pregame";
-        grouped[key].push(t);
-      });
-
-      Object.entries(grouped).forEach(([key, items]) => {
-        const container = topicContainers[key];
-        items.slice(0, 3).forEach(item => container.appendChild(renderTopicCard(item)));
-      });
-    }
-
-    function useRandomTopic() {
-      applyTopic(random(fallbackTopics));
-    }
-
-    loadSports();
-    loadOpponents();
-    updateConditionalFields();
-    renderTopics(fallbackTopics);
-
-    sportEl.addEventListener("change", loadOpponents);
-    typeEl.addEventListener("change", updateConditionalFields);
-  </script>
+<div class="container">
+
+<div class="card">
+<div class="section-title">Post Setup</div>
+
+<div class="grid">
+<div>
+<label>Post Type</label>
+<select id="type">
+<option>Gameday</option>
+<option>Result</option>
+<option>Product</option>
+<option>Fan</option>
+<option>Hook</option>
+<option>Thread</option>
+<option>Reply</option>
+</select>
+</div>
+
+<div>
+<label>Mode</label>
+<select id="mode">
+<option>Normal</option>
+<option>Controversial</option>
+<option>Funny</option>
+<option>Aggressive</option>
+</select>
+</div>
+
+<div id="sportGroup">
+<label>Sport</label>
+<select id="sport"></select>
+</div>
+
+<div id="opponentGroup">
+<label>Opponent</label>
+<select id="opponent"></select>
+</div>
+
+<div id="resultGroup" style="display:none;">
+<label>Result</label>
+<select id="result">
+<option>Win</option>
+<option>Loss</option>
+<option>Close Game</option>
+</select>
+</div>
+
+<div id="productGroup" style="display:none;">
+<label>Product</label>
+<select id="product">
+<option>LSU Hat</option>
+<option>Baseball Tee</option>
+<option>Hoodie</option>
+</select>
+</div>
+
+<div class="full">
+<label>Seed / Vibe / Stat</label>
+<textarea id="vibe" placeholder="Example:
+Derek Curiel is 7 for 7"></textarea>
+<div class="helper">
+Type a stat, idea, or feeling. AI will expand it into real posts.
+</div>
+</div>
+
+</div>
+
+<button class="btn-primary" onclick="generate()">Generate</button>
+<div class="status" id="status">Ready</div>
+</div>
+
+<div id="outputs"></div>
+
+</div>
+
+<script>
+const schedule={
+Baseball:["Texas A&M","Arkansas","Auburn"],
+Football:["Alabama","Florida"],
+Basketball:["Kentucky","Duke"]
+};
+
+const sportEl=document.getElementById("sport");
+const opponentEl=document.getElementById("opponent");
+const typeEl=document.getElementById("type");
+const statusEl=document.getElementById("status");
+const outputsEl=document.getElementById("outputs");
+
+function loadSports(){
+sportEl.innerHTML="";
+Object.keys(schedule).forEach(s=>{
+let o=document.createElement("option");
+o.value=s;o.textContent=s;
+sportEl.appendChild(o);
+});
+}
+
+function loadOpponents(){
+opponentEl.innerHTML="";
+schedule[sportEl.value].forEach(t=>{
+let o=document.createElement("option");
+o.value=t;o.textContent=t;
+opponentEl.appendChild(o);
+});
+}
+
+function updateFields(){
+let t=typeEl.value;
+document.getElementById("resultGroup").style.display=t==="Result"?"block":"none";
+document.getElementById("productGroup").style.display=t==="Product"?"block":"none";
+}
+
+function getPayload(){
+return{
+type:typeEl.value,
+mode:document.getElementById("mode").value,
+sport:sportEl.value,
+opponent:opponentEl.value,
+result:document.getElementById("result").value,
+product:document.getElementById("product").value,
+vibe:document.getElementById("vibe").value
+};
+}
+
+function clearOutputs(){
+outputsEl.innerHTML="";
+}
+
+function render(text,label){
+let card=document.createElement("div");
+card.className="output-card";
+
+let badge=document.createElement("div");
+badge.className="badge";
+badge.textContent=label;
+
+let body=document.createElement("div");
+body.textContent=text;
+
+let btn=document.createElement("button");
+btn.className="copy-btn";
+btn.textContent="Copy";
+btn.onclick=()=>navigator.clipboard.writeText(text);
+
+card.appendChild(badge);
+card.appendChild(body);
+card.appendChild(btn);
+
+outputsEl.appendChild(card);
+}
+
+function renderPack(d){
+clearOutputs();
+
+if(d.interpreted_angle){
+let box=document.createElement("div");
+box.className="interpret";
+box.innerHTML="<strong>AI Angle:</strong><br>"+d.interpreted_angle;
+outputsEl.appendChild(box);
+}
+
+render(d.primary,"Primary");
+
+d.variations.forEach((v,i)=>render(v,"Variation "+(i+1)));
+d.hooks.forEach((h,i)=>render(h,"Hook "+(i+1)));
+d.replies.forEach((r,i)=>render(r,"Reply "+(i+1)));
+render(d.thread.join("\n\n"),"Thread");
+}
+
+async function generate(){
+statusEl.textContent="Generating...";
+clearOutputs();
+
+try{
+const res=await fetch("/api/generate",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(getPayload())
+});
+
+const raw=await res.text();
+
+let data;
+try{
+data=JSON.parse(raw);
+}catch(e){
+throw new Error(raw);
+}
+
+if(!res.ok) throw new Error(data.error);
+
+renderPack(data);
+statusEl.textContent="Done";
+
+}catch(err){
+statusEl.textContent="Error: "+err.message;
+}
+}
+
+loadSports();
+loadOpponents();
+updateFields();
+
+sportEl.addEventListener("change",loadOpponents);
+typeEl.addEventListener("change",updateFields);
+</script>
 </body>
 </html>
