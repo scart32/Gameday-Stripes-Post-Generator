@@ -156,7 +156,7 @@
     }
 
     textarea {
-      min-height: 110px;
+      min-height: 120px;
       resize: vertical;
       line-height: 1.4;
     }
@@ -166,6 +166,7 @@
       margin-bottom: 12px;
       color: var(--muted);
       font-size: 12px;
+      line-height: 1.45;
     }
 
     .button-row {
@@ -203,6 +204,7 @@
     }
 
     .btn-dark { background: #0e0e12; }
+
     .btn-small {
       width: auto;
       min-width: 0;
@@ -216,6 +218,29 @@
       font-size: 12px;
       color: var(--muted);
       margin-top: 10px;
+    }
+
+    .interpreted-box {
+      background: linear-gradient(180deg, rgba(253,208,35,0.06), rgba(70,29,124,0.06));
+      border: 1px solid rgba(253,208,35,0.12);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .interpreted-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+
+    .interpreted-text {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .output-card {
@@ -354,7 +379,7 @@
           <div class="brand-mark">GS</div>
           <div>
             <h1>Gameday Stripes Content Engine</h1>
-            <div class="sub">AI version — adaptive to your brief, your selections, and your voice.</div>
+            <div class="sub">AI version — built to turn your seed into actual fan-native posts.</div>
           </div>
         </div>
         <div class="hero-tag">OpenAI-powered</div>
@@ -374,7 +399,7 @@
                 <option value="Result">Result</option>
                 <option value="Product">Product</option>
                 <option value="Fan">Fan Identity</option>
-                <option value="Hook">Hook Only</option>
+                <option value="Hook">Hook Seed → Full Post</option>
                 <option value="Thread">Thread</option>
                 <option value="Reply">Reply</option>
               </select>
@@ -423,26 +448,29 @@
             </div>
 
             <div class="full">
-              <label for="emotion">VIBE / REAL POINT OF THE POST</label>
+              <label for="emotion">SEED / VIBE / STAT / REAL POINT</label>
               <textarea id="emotion" placeholder="Examples:
+Derek Curiel is 7 for 7
 real fans stayed loud after a bad loss
-this should feel like LSU needs to handle business
-call out bad LSU merch without sounding too salesy
-frustrated but still loyal"></textarea>
-              <div class="helper">Write the angle, feeling, or point. The AI will interpret it.</div>
+LSU merch is too loud and overdone
+this should feel like LSU needs to handle business"></textarea>
+              <div class="helper">
+                You can paste a stat, observation, or rough point here. Example: “Derek Curiel is 7 for 7.” The AI should turn that into a real post idea, not repeat it back.
+              </div>
             </div>
           </div>
 
           <div class="button-row">
             <button class="btn-primary" onclick="generateContent()">Generate AI Post Pack</button>
-            <button class="btn-gold" onclick="useRandomTopic()">I’m Blank</button>
+            <button class="btn-gold" onclick="useRandomTopic()">I'm Blank</button>
           </div>
 
           <div class="status-line" id="statusLine">Ready.</div>
         </div>
 
         <div class="toolbar">
-          <div class="pill">3 true variations</div>
+          <div class="pill">Primary post</div>
+          <div class="pill">3 real variations</div>
           <div class="pill">Hooks</div>
           <div class="pill">Replies</div>
           <div class="pill">Thread</div>
@@ -573,7 +601,9 @@ frustrated but still loyal"></textarea>
       resultGroup.classList.add("hidden");
       productGroup.classList.add("hidden");
 
-      if (type === "Result") resultGroup.classList.remove("hidden");
+      if (type === "Result") {
+        resultGroup.classList.remove("hidden");
+      }
 
       if (type === "Product") {
         sportGroup.classList.add("hidden");
@@ -611,6 +641,29 @@ frustrated but still loyal"></textarea>
       if (len <= 240) return "char-ok";
       if (len <= 280) return "char-warn";
       return "char-bad";
+    }
+
+    function clearOutputs() {
+      outputsEl.innerHTML = "";
+    }
+
+    function renderInterpretedAngle(text) {
+      if (!text) return;
+
+      const box = document.createElement("div");
+      box.className = "interpreted-box";
+
+      const label = document.createElement("div");
+      label.className = "interpreted-label";
+      label.textContent = "AI Interpreted Angle";
+
+      const body = document.createElement("div");
+      body.className = "interpreted-text";
+      body.textContent = text;
+
+      box.appendChild(label);
+      box.appendChild(body);
+      outputsEl.appendChild(box);
     }
 
     function renderOutput(text, label = "Option") {
@@ -658,24 +711,30 @@ frustrated but still loyal"></textarea>
       outputsEl.appendChild(card);
     }
 
-    function clearOutputs() {
-      outputsEl.innerHTML = "";
-    }
-
     function renderPack(data) {
       clearOutputs();
 
-      if (data.primary) renderOutput(data.primary, "Primary");
-      if (data.variations?.length) {
+      if (data.interpreted_angle) {
+        renderInterpretedAngle(data.interpreted_angle);
+      }
+
+      if (data.primary) {
+        renderOutput(data.primary, "Primary");
+      }
+
+      if (Array.isArray(data.variations)) {
         data.variations.forEach((v, i) => renderOutput(v, `Variation ${i + 1}`));
       }
-      if (data.hooks?.length) {
+
+      if (Array.isArray(data.hooks)) {
         data.hooks.forEach((h, i) => renderOutput(h, `Hook ${i + 1}`));
       }
-      if (data.replies?.length) {
+
+      if (Array.isArray(data.replies)) {
         data.replies.forEach((r, i) => renderOutput(r, `Reply ${i + 1}`));
       }
-      if (data.thread?.length) {
+
+      if (Array.isArray(data.thread) && data.thread.length) {
         renderOutput(data.thread.join("\n\n"), "Thread");
       }
     }
@@ -720,7 +779,9 @@ frustrated but still loyal"></textarea>
         if (found) opponentEl.value = topicObj.opponent;
       }
 
-      if (topicObj.vibe) emotionEl.value = topicObj.vibe;
+      if (topicObj.vibe) {
+        emotionEl.value = topicObj.vibe;
+      }
 
       updateConditionalFields();
     }
