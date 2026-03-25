@@ -93,7 +93,7 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 16px;
       align-items: start;
     }
@@ -156,7 +156,7 @@
     }
 
     textarea {
-      min-height: 100px;
+      min-height: 110px;
       resize: vertical;
       line-height: 1.4;
     }
@@ -203,7 +203,6 @@
     }
 
     .btn-dark { background: #0e0e12; }
-
     .btn-small {
       width: auto;
       min-width: 0;
@@ -212,6 +211,12 @@
     }
 
     .hidden { display: none !important; }
+
+    .status-line {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
 
     .output-card {
       background: linear-gradient(180deg, #101014 0%, #0c0c10 100%);
@@ -273,24 +278,6 @@
       font-size: 13px;
     }
 
-    .side-card {
-      position: sticky;
-      top: 20px;
-    }
-
-    .topic-section {
-      margin-bottom: 16px;
-    }
-
-    .topic-subtitle {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin: 0 0 10px 0;
-    }
-
     .topic-box {
       background: linear-gradient(180deg, rgba(253,208,35,0.08), rgba(70,29,124,0.08));
       border: 1px solid rgba(253,208,35,0.15);
@@ -320,10 +307,13 @@
       flex-wrap: wrap;
     }
 
-    .status-line {
+    .topic-subtitle {
       font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 12px;
+      font-weight: 800;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin: 0 0 10px 0;
     }
 
     .toolbar {
@@ -345,7 +335,6 @@
 
     @media (max-width: 900px) {
       .layout { grid-template-columns: 1fr; }
-      .side-card { position: static; }
     }
 
     @media (max-width: 640px) {
@@ -365,10 +354,10 @@
           <div class="brand-mark">GS</div>
           <div>
             <h1>Gameday Stripes Content Engine</h1>
-            <div class="sub">LSU-first. Short. Punchy. Fan voice. Built for X.</div>
+            <div class="sub">AI version — adaptive to your brief, your selections, and your voice.</div>
           </div>
         </div>
-        <div class="hero-tag">Smart Topics + Generator</div>
+        <div class="hero-tag">OpenAI-powered</div>
       </div>
     </div>
 
@@ -411,7 +400,7 @@
               <select id="opponent"></select>
             </div>
 
-            <div id="resultGroup">
+            <div id="resultGroup" class="hidden">
               <label for="result">GAME RESULT</label>
               <select id="result">
                 <option value="Win">Win</option>
@@ -422,7 +411,7 @@
               </select>
             </div>
 
-            <div id="productGroup">
+            <div id="productGroup" class="hidden">
               <label for="product">PRODUCT</label>
               <select id="product">
                 <option>National Champions Hat</option>
@@ -440,61 +429,43 @@ real fans stayed loud after a bad loss
 this should feel like LSU needs to handle business
 call out bad LSU merch without sounding too salesy
 frustrated but still loyal"></textarea>
-              <div class="helper">Type the angle, not the final tweet. The generator will reinterpret it.</div>
+              <div class="helper">Write the angle, feeling, or point. The AI will interpret it.</div>
             </div>
           </div>
 
           <div class="button-row">
-            <button class="btn-primary" onclick="generateSingle()">Generate 1</button>
-            <button class="btn-gold" onclick="generateMultiple()">Generate 3 Variations</button>
+            <button class="btn-primary" onclick="generateContent()">Generate AI Post Pack</button>
+            <button class="btn-gold" onclick="useRandomTopic()">I’m Blank</button>
           </div>
 
-          <div class="button-row-3">
-            <button class="btn-dark" onclick="generateReplies()">Replies</button>
-            <button class="btn-dark" onclick="generateHooks()">Hooks</button>
-            <button class="btn-dark" onclick="generateThread()">Thread</button>
-          </div>
+          <div class="status-line" id="statusLine">Ready.</div>
         </div>
 
         <div class="toolbar">
-          <div class="pill">Pregame prompts</div>
-          <div class="pill">Postgame prompts</div>
-          <div class="pill">Merch tie-ins</div>
-          <div class="pill">Controversial takes</div>
+          <div class="pill">3 true variations</div>
+          <div class="pill">Hooks</div>
+          <div class="pill">Replies</div>
+          <div class="pill">Thread</div>
         </div>
 
         <div id="outputs"></div>
       </div>
 
-      <div class="side-card">
+      <div>
         <div class="card">
           <div class="section-title">Suggested Topics</div>
-          <div class="status-line" id="topicStatus">Pulling LSU-related topic ideas...</div>
 
-          <div class="button-row">
-            <button class="btn-primary" onclick="fetchTopics()">Refresh Topics</button>
-            <button class="btn-dark" onclick="fillRandomTopic()">I'm Blank</button>
-          </div>
+          <div class="topic-subtitle">Pregame</div>
+          <div id="topicsPregame"></div>
 
-          <div class="topic-section">
-            <div class="topic-subtitle">Pregame</div>
-            <div id="topicsPregame"></div>
-          </div>
+          <div class="topic-subtitle">Postgame</div>
+          <div id="topicsPostgame"></div>
 
-          <div class="topic-section">
-            <div class="topic-subtitle">Postgame</div>
-            <div id="topicsPostgame"></div>
-          </div>
+          <div class="topic-subtitle">Merch Tie-In</div>
+          <div id="topicsMerch"></div>
 
-          <div class="topic-section">
-            <div class="topic-subtitle">Merch Tie-In</div>
-            <div id="topicsMerch"></div>
-          </div>
-
-          <div class="topic-section">
-            <div class="topic-subtitle">Controversial Take</div>
-            <div id="topicsControversial"></div>
-          </div>
+          <div class="topic-subtitle">Controversial Take</div>
+          <div id="topicsControversial"></div>
         </div>
       </div>
     </div>
@@ -519,24 +490,6 @@ frustrated but still loyal"></textarea>
         reason: "Pregame angle"
       },
       {
-        category: "pregame",
-        topic: "Statement game feel for LSU softball",
-        vibe: "this should feel like a tone-setting game for LSU softball",
-        type: "Gameday",
-        sport: "Softball",
-        opponent: "Texas",
-        reason: "Pregame angle"
-      },
-      {
-        category: "postgame",
-        topic: "What that LSU result actually said about the team",
-        vibe: "fans are going to split hard on what that game actually said about LSU",
-        type: "Result",
-        sport: "Basketball",
-        opponent: "Alabama",
-        reason: "Postgame debate"
-      },
-      {
         category: "postgame",
         topic: "Real fans still showed up after a frustrating loss",
         vibe: "real fans stayed loud after a bad loss",
@@ -555,30 +508,12 @@ frustrated but still loyal"></textarea>
         reason: "Merch tie-in"
       },
       {
-        category: "merch",
-        topic: "Tie a current LSU moment back to clean wearable gear",
-        vibe: "this should feel like real LSU gear for real fans not random loud merch",
-        type: "Product",
-        sport: "Football",
-        opponent: "Alabama",
-        reason: "Merch tie-in"
-      },
-      {
         category: "controversial",
         topic: "Some LSU fans only get loud when things are easy",
         vibe: "this should call out selective fandom without overexplaining it",
         type: "Fan",
         sport: "Football",
         opponent: "Ole Miss",
-        reason: "Controversial take"
-      },
-      {
-        category: "controversial",
-        topic: "LSU merch is mostly too loud and overdesigned",
-        vibe: "this should feel blunt and opinionated about bad LSU merch",
-        type: "Product",
-        sport: "Baseball",
-        opponent: "Auburn",
         reason: "Controversial take"
       }
     ];
@@ -591,7 +526,7 @@ frustrated but still loyal"></textarea>
     const productEl = document.getElementById("product");
     const emotionEl = document.getElementById("emotion");
     const outputsEl = document.getElementById("outputs");
-    const topicStatusEl = document.getElementById("topicStatus");
+    const statusLineEl = document.getElementById("statusLine");
 
     const sportGroup = document.getElementById("sportGroup");
     const opponentGroup = document.getElementById("opponentGroup");
@@ -605,98 +540,8 @@ frustrated but still loyal"></textarea>
       controversial: document.getElementById("topicsControversial")
     };
 
-    let latestTopics = [];
-
     function random(arr) {
       return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function shuffle(arr) {
-      const copy = [...arr];
-      for (let i = copy.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [copy[i], copy[j]] = [copy[j], copy[i]];
-      }
-      return copy;
-    }
-
-    function cap(str) {
-      if (!str) return "";
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    function cleanInput(text) {
-      return (text || "").replace(/\s+/g, " ").trim();
-    }
-
-    function normalizeEmotion(text) {
-      let t = cleanInput(text);
-      if (!t) return "";
-      t = t.replace(/[.?!]+$/g, "");
-      return t;
-    }
-
-    function emotionTransforms(emotion, mode) {
-      const e = normalizeEmotion(emotion);
-      if (!e) return [];
-
-      const base = [
-        e,
-        `Feels like ${e}`,
-        `Lowkey feels like ${e}`,
-        `Not gonna lie, ${e}`,
-        `This feels like ${e}`,
-        `Kind of feels like ${e}`,
-        `Hard not to feel like ${e}`
-      ];
-
-      if (mode === "Controversial") {
-        base.push(
-          `If we're being real, ${e}`,
-          `People won't like it, but ${e}`,
-          `Might be unpopular, but ${e}`
-        );
-      }
-
-      if (mode === "Funny") {
-        base.push(
-          `${cap(e)} and my blood pressure knows it`,
-          `${cap(e)} but let me act normal`,
-          `${cap(e)} because LSU refuses to let anyone relax`
-        );
-      }
-
-      if (mode === "Aggressive") {
-        base.push(
-          `${cap(e)}. Simple.`,
-          `${cap(e)} and I'm not dressing it up`,
-          `${cap(e)}. That's it`
-        );
-      }
-
-      return [...new Set(base)];
-    }
-
-    function getModeCTAs(mode, type) {
-      const common = {
-        Gameday: ["Win or loss?", "How we feeling?", "Talk to me.", "Be honest."],
-        Result: ["Be honest.", "Agree or disagree?", "What's your takeaway?", "How are we feeling?"],
-        Product: ["Would you wear it?", "Need it or nah?", "Be honest.", "You rocking this?"],
-        Fan: ["Tell me I'm wrong.", "Still here or not?", "You one of them?", "Real fan behavior or what?"],
-        Hook: ["Which one hits?", "Best one?", "Talk to me.", "Be honest."],
-        Thread: ["What's your read?", "Talk to me.", "Agree or disagree?", "Be honest."],
-        Reply: ["Exactly.", "You get it.", "Say it louder.", "This is the one."]
-      };
-
-      const spicy = {
-        Controversial: ["Tell me I'm wrong.", "Some of y'all won't like that.", "Argue with the wall.", "Let's hear it."],
-        Funny: ["😂", "Be honest 😂", "I know I'm not alone here.", "Tell me this isn't true."],
-        Aggressive: ["Simple.", "That's it.", "No sugarcoating it.", "Say I'm wrong."],
-        Normal: []
-      };
-
-      const arr = [...(common[type] || common.Gameday), ...(spicy[mode] || [])];
-      return [...new Set(arr)];
     }
 
     function loadSports() {
@@ -736,158 +581,21 @@ frustrated but still loyal"></textarea>
         productGroup.classList.remove("hidden");
       }
 
-      if (type === "Fan") opponentGroup.classList.add("hidden");
+      if (type === "Fan") {
+        opponentGroup.classList.add("hidden");
+      }
 
-      if (type === "Hook") resultGroup.classList.add("hidden");
-
-      if (type === "Thread") resultGroup.classList.add("hidden");
+      if (type === "Hook" || type === "Thread" || type === "Reply") {
+        resultGroup.classList.add("hidden");
+      }
 
       if (type === "Reply") {
         opponentGroup.classList.add("hidden");
-        resultGroup.classList.add("hidden");
         productGroup.classList.add("hidden");
       }
     }
 
-    function gamedayTemplates(ctx) {
-      const { sport, opponent, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-      const ctas = getModeCTAs(mode, "Gameday");
-
-      const templates = [
-        () => `LSU vs ${opponent}.\n\n${random(feeling.length ? feeling : ["Need LSU to set the tone early.", "Feels like one LSU should handle.", "Need a real four-quarter performance."])}\n\n${random(ctas)}`,
-        () => `It's ${sport} gameday.\n\n${random(feeling.length ? feeling : ["No slow start today.", "Just go handle business.", "Need LSU to look like the better team from the jump."])}\n\n${random(ctas)}`,
-        () => `${sport} tonight.\n\n${random(feeling.length ? feeling : ["This one matters.", "Feels like a statement spot.", "Need the Tigers to look locked in."])}\n\n${random(ctas)}`,
-        () => `Be honest.\n\nLSU vs ${opponent}.\n\n${random(feeling.length ? feeling : ["Should be a business trip.", "Need LSU to act like LSU.", "No excuses tonight."])}\n\n${random(ctas)}`,
-        () => `${opponent} on deck.\n\n${random(feeling.length ? feeling : ["Need that edge tonight.", "This isn't one to mess around with.", "Feels like one LSU needs to own early."])}\n\n${random(ctas)}`
-      ];
-
-      return shuffle(templates);
-    }
-
-    function resultTemplates(ctx) {
-      const { sport, opponent, result, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-      const ctas = getModeCTAs(mode, "Result");
-
-      const leads = {
-        "Win": ["TIGERS WIN.", "Handled.", "Got it done.", "We'll take it."],
-        "Loss": ["Tough one.", "Yeah, that one hurt.", "Not great.", "That one sucked."],
-        "Close Game": ["Heart attack game.", "Stressful for no reason.", "Survived.", "That took years off my life."],
-        "Blowout Win": ["Statement made.", "Handled from the jump.", "Exactly what should've happened."],
-        "Blowout Loss": ["That got ugly.", "No sugarcoating that.", "Flush it and move on."]
-      };
-
-      const templates = [
-        () => `${random(leads[result] || leads["Win"])}\n\n${sport} vs ${opponent}.\n\n${random(feeling.length ? feeling : ["That game says a lot.", "Fans are going to have opinions on that one.", "That told you something."])}\n\n${random(ctas)}`,
-        () => `${random(leads[result] || leads["Win"])}\n\n${random(feeling.length ? feeling : ["Not everybody is going to read that the same way.", "Hard not to come away feeling something after that.", "That one opened up a few conversations."])}\n\n${random(ctas)}`,
-        () => `${opponent} game is over.\n\n${random(leads[result] || leads["Win"])}\n\n${random(feeling.length ? feeling : ["What's your honest takeaway?", "That one deserves a real conversation.", "That wasn't nothing."])}\n\n${random(ctas)}`,
-        () => `Be honest.\n\n${sport} against ${opponent}.\n\n${random(feeling.length ? feeling : ["What did that actually tell you?", "That game felt bigger than one result.", "There was a lot in that one."])}\n\n${random(ctas)}`,
-        () => `${random(leads[result] || leads["Win"])}\n\n${random(feeling.length ? feeling : ["Some fans are going one way with it. Some aren't.", "That one is going to split people.", "Not everybody's reading that the same way."])}\n\n${random(ctas)}`
-      ];
-
-      return shuffle(templates);
-    }
-
-    function productTemplates(ctx) {
-      const { product, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-      const ctas = getModeCTAs(mode, "Product");
-
-      const templates = [
-        () => `Most LSU merch is honestly too much.\n\n${product}\n\n${random(feeling.length ? feeling : ["Had to make something cleaner.", "Wanted something I'd actually wear.", "The goal was simple: better LSU gear."])}\n\n${random(ctas)}`,
-        () => `${product}\n\n${random(feeling.length ? feeling : ["Not all fan gear needs to scream at you.", "Clean beats loud every time.", "This is more my speed."])}\n\n${random(ctas)}`,
-        () => `Be honest about LSU gear for a second.\n\n${product}\n\n${random(feeling.length ? feeling : ["Too much of it feels forced.", "Way too much bad merch out there.", "Wanted something that felt more real."])}\n\n${random(ctas)}`,
-        () => `This isn't random fan gear.\n\n${product}\n\n${random(feeling.length ? feeling : ["It's supposed to feel different.", "The point was making something people actually want to wear.", "Less gimmick. Better gear."])}\n\n${random(ctas)}`,
-        () => `${product}\n\n${random(feeling.length ? feeling : ["Had to build what I wasn't seeing.", "Wanted clean LSU gear without all the extra.", "Simple idea: make it wearable."])}\n\n${random(ctas)}`
-      ];
-
-      return shuffle(templates);
-    }
-
-    function fanTemplates(ctx) {
-      const { sport, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-      const ctas = getModeCTAs(mode, "Fan");
-
-      const templates = [
-        () => `Real LSU fans don't disappear.\n\n${random(feeling.length ? feeling : ["They're still here after wins and losses.", "That's the difference.", "That's what makes them real."])}\n\n${random(ctas)}`,
-        () => `Some people only show up when LSU wins.\n\n${random(feeling.length ? feeling : ["The real ones are still here either way.", "That's not how this works.", "The real ones don't move like that."])}\n\n${random(ctas)}`,
-        () => `This brand is for the people who stay locked in.\n\n${random(feeling.length ? feeling : [`Not just when ${sport} is rolling.`, "Not just when it's easy.", "Not just when it looks good."])}\n\n${random(ctas)}`,
-        () => `Be honest.\n\n${random(feeling.length ? feeling : ["Loyalty looks different after a loss.", "Real fandom isn't selective.", "It's easy to talk when things are rolling."])}\n\n${random(ctas)}`,
-        () => `The real ones are obvious.\n\n${random(feeling.length ? feeling : ["Still here. Still loud.", "They don't disappear.", "They don't fold after one bad night."])}\n\n${random(ctas)}`
-      ];
-
-      return shuffle(templates);
-    }
-
-    function hookTemplates(ctx) {
-      const { sport, opponent, product, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-
-      const templates = [
-        () => `LSU vs ${opponent}.`,
-        () => `Most LSU merch is honestly terrible.`,
-        () => `Real LSU fans don't disappear.`,
-        () => `Need LSU to look like the better team early.`,
-        () => `${product}. But make it actually wearable.`,
-        () => random(feeling.length ? feeling : ["This one matters.", "No sugarcoating this one.", "This should be a business trip."]),
-        () => `Some of y'all aren't going to like this.`,
-        () => `${sport} tonight. No excuses.`
-      ];
-
-      return shuffle(templates);
-    }
-
-    function threadTemplates(ctx) {
-      const { sport, opponent, mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-      const ctas = getModeCTAs(mode, "Thread");
-
-      const threads = [
-        [
-          `LSU vs ${opponent}.`,
-          random(feeling.length ? feeling : ["Feels like one LSU needs to control early.", "This feels bigger than just another game.", "Need LSU to look like LSU."]),
-          `The part I'm watching most is whether LSU looks sharp from the jump or spends half the game waking up.`,
-          random(ctas)
-        ],
-        [
-          `${sport} tonight.`,
-          random(feeling.length ? feeling : ["No slow start.", "Need a real response.", "Need a complete one."]),
-          `This feels like the kind of game that tells you whether people are just excited or whether the team is actually settling in.`,
-          random(ctas)
-        ],
-        [
-          `Be honest: LSU vs ${opponent}.`,
-          random(feeling.length ? feeling : ["There should be a tone to this one.", "This isn't one to drift through.", "Need edge tonight."]),
-          `Not saying every game is a referendum, but some games tell you a lot by how they feel as much as by the score.`,
-          random(ctas)
-        ]
-      ];
-
-      return shuffle(threads);
-    }
-
-    function replyTemplates(ctx) {
-      const { mode, emotion } = ctx;
-      const feeling = emotionTransforms(emotion, mode);
-
-      const templates = [
-        "Exactly.",
-        "You get it.",
-        "That's pretty much it.",
-        "Not everybody ready for that convo.",
-        "Say it louder.",
-        "This is the one.",
-        "Hard to argue with that.",
-        "Yep.",
-        random(feeling.length ? feeling : ["Couldn't have said it better.", "That's the conversation.", "That's where I'm at too."])
-      ];
-
-      return shuffle(templates);
-    }
-
-    function getContext() {
+    function getPayload() {
       return {
         type: typeEl.value,
         mode: modeEl.value,
@@ -895,23 +603,8 @@ frustrated but still loyal"></textarea>
         opponent: opponentEl.value,
         result: resultEl.value,
         product: productEl.value,
-        emotion: emotionEl.value
+        vibe: emotionEl.value
       };
-    }
-
-    function buildOptions(ctx) {
-      if (ctx.type === "Gameday") return gamedayTemplates(ctx).map(fn => fn());
-      if (ctx.type === "Result") return resultTemplates(ctx).map(fn => fn());
-      if (ctx.type === "Product") return productTemplates(ctx).map(fn => fn());
-      if (ctx.type === "Fan") return fanTemplates(ctx).map(fn => fn());
-      if (ctx.type === "Hook") return hookTemplates(ctx).map(fn => fn());
-      if (ctx.type === "Thread") return threadTemplates(ctx).map(arr => arr.join("\n\n"));
-      if (ctx.type === "Reply") return replyTemplates(ctx);
-      return ["No type selected."];
-    }
-
-    function dedupe(arr) {
-      return [...new Set(arr.map(x => x.trim()))];
     }
 
     function getCharClass(len) {
@@ -956,18 +649,7 @@ frustrated but still loyal"></textarea>
         setTimeout(() => copyBtn.textContent = "Copy", 1200);
       };
 
-      const trimBtn = document.createElement("button");
-      trimBtn.className = "btn-dark";
-      trimBtn.textContent = "Shorten";
-      trimBtn.onclick = () => {
-        const shortened = shortenText(text);
-        body.textContent = shortened;
-        count.textContent = `${shortened.length} chars`;
-        count.className = `char-count ${getCharClass(shortened.length)}`;
-      };
-
       actions.appendChild(copyBtn);
-      actions.appendChild(trimBtn);
 
       card.appendChild(top);
       card.appendChild(body);
@@ -976,67 +658,50 @@ frustrated but still loyal"></textarea>
       outputsEl.appendChild(card);
     }
 
-    function shortenText(text) {
-      if (text.length <= 250) return text;
-      let t = text
-        .replace(/\bhonestly\b/gi, "")
-        .replace(/\bactually\b/gi, "")
-        .replace(/\bkind of\b/gi, "")
-        .replace(/\bnot gonna lie,?\b/gi, "")
-        .replace(/\s+/g, " ")
-        .trim();
-
-      if (t.length <= 250) return t;
-
-      const parts = t.split("\n").filter(Boolean);
-      if (parts.length > 2) {
-        parts.splice(2, 1);
-        t = parts.join("\n\n").trim();
-      }
-
-      if (t.length <= 250) return t;
-      return t.slice(0, 247).trim() + "...";
-    }
-
     function clearOutputs() {
       outputsEl.innerHTML = "";
     }
 
-    function generateSingle() {
+    function renderPack(data) {
       clearOutputs();
-      const options = dedupe(buildOptions(getContext()));
-      renderOutput(options[0], "Primary");
+
+      if (data.primary) renderOutput(data.primary, "Primary");
+      if (data.variations?.length) {
+        data.variations.forEach((v, i) => renderOutput(v, `Variation ${i + 1}`));
+      }
+      if (data.hooks?.length) {
+        data.hooks.forEach((h, i) => renderOutput(h, `Hook ${i + 1}`));
+      }
+      if (data.replies?.length) {
+        data.replies.forEach((r, i) => renderOutput(r, `Reply ${i + 1}`));
+      }
+      if (data.thread?.length) {
+        renderOutput(data.thread.join("\n\n"), "Thread");
+      }
     }
 
-    function generateMultiple() {
+    async function generateContent() {
+      statusLineEl.textContent = "Generating...";
       clearOutputs();
-      const options = dedupe(buildOptions(getContext()));
-      const picked = options.slice(0, 3);
-      picked.forEach((text, idx) => renderOutput(text, `Option ${idx + 1}`));
-    }
 
-    function generateReplies() {
-      clearOutputs();
-      const ctx = getContext();
-      ctx.type = "Reply";
-      const options = dedupe(buildOptions(ctx)).slice(0, 5);
-      options.forEach((text, idx) => renderOutput(text, `Reply ${idx + 1}`));
-    }
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(getPayload())
+        });
 
-    function generateHooks() {
-      clearOutputs();
-      const ctx = getContext();
-      ctx.type = "Hook";
-      const options = dedupe(buildOptions(ctx)).slice(0, 6);
-      options.forEach((text, idx) => renderOutput(text, `Hook ${idx + 1}`));
-    }
+        const data = await res.json();
 
-    function generateThread() {
-      clearOutputs();
-      const ctx = getContext();
-      ctx.type = "Thread";
-      const options = dedupe(buildOptions(ctx)).slice(0, 3);
-      options.forEach((text, idx) => renderOutput(text, `Thread ${idx + 1}`));
+        if (!res.ok) {
+          throw new Error(data.error || "Generation failed.");
+        }
+
+        renderPack(data);
+        statusLineEl.textContent = "Done.";
+      } catch (err) {
+        statusLineEl.textContent = `Error: ${err.message}`;
+      }
     }
 
     function applyTopic(topicObj) {
@@ -1044,21 +709,20 @@ frustrated but still loyal"></textarea>
 
       if (topicObj.type) typeEl.value = topicObj.type;
       if (topicObj.category === "controversial") modeEl.value = "Controversial";
+
       if (topicObj.sport && schedule[topicObj.sport]) {
         sportEl.value = topicObj.sport;
         loadOpponents();
       }
+
       if (topicObj.opponent) {
         const found = [...opponentEl.options].some(opt => opt.value === topicObj.opponent);
         if (found) opponentEl.value = topicObj.opponent;
       }
+
       if (topicObj.vibe) emotionEl.value = topicObj.vibe;
 
       updateConditionalFields();
-    }
-
-    function clearTopicColumns() {
-      Object.values(topicContainers).forEach(el => el.innerHTML = "");
     }
 
     function renderTopicCard(t) {
@@ -1084,9 +748,9 @@ frustrated but still loyal"></textarea>
       const genBtn = document.createElement("button");
       genBtn.className = "btn-dark btn-small";
       genBtn.textContent = "Use + Generate";
-      genBtn.onclick = () => {
+      genBtn.onclick = async () => {
         applyTopic(t);
-        generateMultiple();
+        await generateContent();
       };
 
       actions.appendChild(useBtn);
@@ -1100,7 +764,7 @@ frustrated but still loyal"></textarea>
     }
 
     function renderTopics(topics) {
-      clearTopicColumns();
+      Object.values(topicContainers).forEach(el => el.innerHTML = "");
 
       const grouped = {
         pregame: [],
@@ -1116,49 +780,18 @@ frustrated but still loyal"></textarea>
 
       Object.entries(grouped).forEach(([key, items]) => {
         const container = topicContainers[key];
-        if (!items.length) {
-          const empty = document.createElement("div");
-          empty.className = "topic-box";
-          empty.innerHTML = `<div class="topic-title">No topics here yet</div><div class="topic-meta">Refresh to pull more ideas.</div>`;
-          container.appendChild(empty);
-          return;
-        }
-
-        items.slice(0, 3).forEach(item => {
-          container.appendChild(renderTopicCard(item));
-        });
+        items.slice(0, 3).forEach(item => container.appendChild(renderTopicCard(item)));
       });
     }
 
-    async function fetchTopics() {
-      topicStatusEl.textContent = "Refreshing LSU-related topic ideas...";
-      try {
-        const res = await fetch("/api/topics");
-        if (!res.ok) throw new Error("Topic API failed");
-        const data = await res.json();
-
-        latestTopics = Array.isArray(data.topics) && data.topics.length ? data.topics : fallbackTopics;
-        topicStatusEl.textContent = data.source === "x_api"
-          ? "Live topic suggestions loaded."
-          : "Using fallback LSU topic suggestions.";
-
-        renderTopics(latestTopics);
-      } catch (err) {
-        latestTopics = fallbackTopics;
-        topicStatusEl.textContent = "X topic lookup unavailable. Using fallback LSU topic ideas.";
-        renderTopics(latestTopics);
-      }
-    }
-
-    function fillRandomTopic() {
-      const pool = latestTopics.length ? latestTopics : fallbackTopics;
-      applyTopic(random(pool));
+    function useRandomTopic() {
+      applyTopic(random(fallbackTopics));
     }
 
     loadSports();
     loadOpponents();
     updateConditionalFields();
-    fetchTopics();
+    renderTopics(fallbackTopics);
 
     sportEl.addEventListener("change", loadOpponents);
     typeEl.addEventListener("change", updateConditionalFields);
