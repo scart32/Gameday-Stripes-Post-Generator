@@ -1,7 +1,6 @@
 {
-  "name": "gameday-stripes-content-engine",
-  "private": true,
-  "dependencies": {
-    "openai": "^5.0.0"
-  }
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/api/(.*)", "dest": "/api/$1" }
+  ]
 }
